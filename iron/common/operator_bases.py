@@ -262,3 +262,104 @@ class BinaryElementwiseOperator(MLIROperator):
                 ],
             ),
         ]
+
+
+@dataclass
+class SingleElementwiseOperator(MLIROperator):
+    """Base class for singleelement-wise AIE operators (one inputs, one output).
+
+    Assumes a single kernel source file and a standard design.py callback
+    with args [device, size, num_aie_columns, tile_size, trace_size].
+
+    Unlike ChanneledUnaryOperator, singleelementwise operators have no explicit num_channels
+    parameter — each core uses 1 DMA channel (one per input), so the ShimDMA
+    limit is enforced as num_aie_columns * 1 <= 16.
+    
+    Subclasses must define ClassVar attributes:
+        kernel_name:   name of the kernel object file (e.g. "add" → add.o / add.cc)
+        kernel_subdir: subdirectory under aie_kernels/ (e.g. "generic")
+        callback_fn:   design.py callback function name (e.g. "my_eltwise_add")
+    """
+
+    size: int
+    tile_size: int
+    num_aie_columns: int = 8
+    context: AIEContext | None = field(default=None, repr=False)
+
+    kernel_name: ClassVar[str]
+    kernel_fn_name: ClassVar[str]
+    kernel_subdir: ClassVar[str]
+    callback_fn: ClassVar[str]
+    # Override parent's "c" alias with "col" so singleelementwise operator names
+    # are unambiguous when num_aie_columns and num_channels both appear in the
+    # name (the parent ChanneledUnaryOperator uses "c" for num_aie_columns).
+    _name_aliases: ClassVar[dict[str, str]] = {
+        **MLIROperator._name_aliases,
+        "num_aie_columns": "col",  # intentionally overrides parent's "c" alias
+    }
+
+    def __post_init__(self) -> None:
+        if self.size % (self.num_aie_columns * self.tile_size) != 0:
+            raise ValueError(
+                f"size ({self.size}) must be a multiple of "
+                f"num_aie_columns * tile_size ({self.num_aie_columns * self.tile_size})"
+            )
+        dev = aie_utils.get_current_device()
+        shim_dma_limit = get_shim_dma_limit(dev)
+        # Singleelementwise operators use 1 ShimDMA channel per column (one per input).
+        total_shimdma_channels = self.num_aie_columns * 1
+        if total_shimdma_channels > shim_dma_limit:
+            raise ValueError(
+                f"num_aie_columns ({self.num_aie_columns}) exceeds ShimDMA limit "
+                f"of {shim_dma_limit // 1} columns for this device"
+            )
+        super().__init__(context=self.context)
+
+    def get_arg_spec(self) -> list[AIERuntimeArgSpec]:
+        return [
+            AIERuntimeArgSpec("in", (self.size,)),
+            AIERuntimeArgSpec("out", (self.size,)),
+        ]
+
+    def _mlir_callback_args(self) -> list[Any]:
+        """Return the callback_args list for PythonGeneratedMLIRArtifact.
+
+        Subclasses with extra parameters (e.g. scalar_factor) should
+        override this method.
+        """
+        return [
+            aie_utils.get_current_device(),
+            self.size,
+            self.num_aie_columns,
+            self.tile_size,
+            0,
+        ]
+
+    def get_mlir_artifact(self) -> PythonGeneratedMLIRArtifact:
+        callback_args = self._mlir_callback_args() + [
+            self.kernel_fn_name,
+            f"{self.kernel_name}.o",
+        ]
+        return PythonGeneratedMLIRArtifact(
+            f"{self.name}.mlir",
+            DesignGenerator(
+                self.operator_dir.parent / "single_elementwise_design.py",
+                "single_elementwise_design",
+                tuple(callback_args),
+            ),
+        )
+
+    def get_kernel_artifacts(self) -> list[KernelObjectArtifact]:
+        return [
+            KernelObjectArtifact(
+                f"{self.kernel_name}.o",
+                dependencies=[
+                    SourceArtifact(
+                        self.context.base_dir
+                        / "aie_kernels"
+                        / self.kernel_subdir
+                        / f"{self.kernel_name}.cc"
+                    )
+                ],
+            ),
+        ]

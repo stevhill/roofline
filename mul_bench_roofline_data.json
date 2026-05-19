@@ -1,0 +1,372 @@
+{
+  "points": [
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1,
+      "latency_us": 181.9,
+      "bandwidth_gbps": 23.05829576690489,
+      "arithmetic_intensity": 0.3333333333333333,
+      "achieved_gflops": 11.529147883452445
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 51,
+      "latency_us": 182.622,
+      "bandwidth_gbps": 22.96713429926296,
+      "arithmetic_intensity": 17.0,
+      "achieved_gflops": 585.6619246312055
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 101,
+      "latency_us": 187.25,
+      "bandwidth_gbps": 22.399487316421897,
+      "arithmetic_intensity": 33.666666666666664,
+      "achieved_gflops": 1131.1741094793056
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 151,
+      "latency_us": 213.335,
+      "bandwidth_gbps": 19.660646401199994,
+      "arithmetic_intensity": 50.333333333333336,
+      "achieved_gflops": 1484.3788032905993
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 201,
+      "latency_us": 232.539,
+      "bandwidth_gbps": 18.03699164441234,
+      "arithmetic_intensity": 67.0,
+      "achieved_gflops": 1812.71766026344
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 251,
+      "latency_us": 217.833,
+      "bandwidth_gbps": 19.254676747783854,
+      "arithmetic_intensity": 83.66666666666667,
+      "achieved_gflops": 2416.4619318468735
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 301,
+      "latency_us": 312.076,
+      "bandwidth_gbps": 13.440008203130008,
+      "arithmetic_intensity": 100.33333333333333,
+      "achieved_gflops": 2022.721234571066
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 351,
+      "latency_us": 277.928,
+      "bandwidth_gbps": 15.091333007109757,
+      "arithmetic_intensity": 117.0,
+      "achieved_gflops": 2648.5289427477624
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 401,
+      "latency_us": 283.067,
+      "bandwidth_gbps": 14.817354195296518,
+      "arithmetic_intensity": 133.66666666666666,
+      "achieved_gflops": 2970.879516156952
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 451,
+      "latency_us": 281.405,
+      "bandwidth_gbps": 14.904866651267746,
+      "arithmetic_intensity": 150.33333333333334,
+      "achieved_gflops": 3361.047429860877
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 501,
+      "latency_us": 300.508,
+      "bandwidth_gbps": 13.957378838500142,
+      "arithmetic_intensity": 167.0,
+      "achieved_gflops": 3496.3233990442855
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 551,
+      "latency_us": 341.108,
+      "bandwidth_gbps": 12.296117358725096,
+      "arithmetic_intensity": 183.66666666666666,
+      "achieved_gflops": 3387.5803323287637
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 601,
+      "latency_us": 332.334,
+      "bandwidth_gbps": 12.620749005518546,
+      "arithmetic_intensity": 200.33333333333334,
+      "achieved_gflops": 3792.5350761583227
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 651,
+      "latency_us": 355.615,
+      "bandwidth_gbps": 11.794508105676083,
+      "arithmetic_intensity": 217.0,
+      "achieved_gflops": 3839.112388397565
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 701,
+      "latency_us": 361.746,
+      "bandwidth_gbps": 11.594610583116332,
+      "arithmetic_intensity": 233.66666666666666,
+      "achieved_gflops": 4063.9110093822737
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 751,
+      "latency_us": 384.276,
+      "bandwidth_gbps": 10.914821638613912,
+      "arithmetic_intensity": 250.33333333333334,
+      "achieved_gflops": 4098.515525299524
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 801,
+      "latency_us": 385.478,
+      "bandwidth_gbps": 10.880786970981484,
+      "arithmetic_intensity": 267.0,
+      "achieved_gflops": 4357.755181878084
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 851,
+      "latency_us": 391.699,
+      "bandwidth_gbps": 10.707977298895324,
+      "arithmetic_intensity": 283.6666666666667,
+      "achieved_gflops": 4556.244340679961
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 901,
+      "latency_us": 432.02,
+      "bandwidth_gbps": 9.708587565390491,
+      "arithmetic_intensity": 300.3333333333333,
+      "achieved_gflops": 4373.718698208417
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 951,
+      "latency_us": 418.899,
+      "bandwidth_gbps": 10.012685635439569,
+      "arithmetic_intensity": 317.0,
+      "achieved_gflops": 4761.032019651516
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1001,
+      "latency_us": 455.772,
+      "bandwidth_gbps": 9.20263640592226,
+      "arithmetic_intensity": 333.6666666666667,
+      "achieved_gflops": 4605.919521164091
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1051,
+      "latency_us": 476.299,
+      "bandwidth_gbps": 8.806031505419917,
+      "arithmetic_intensity": 350.3333333333333,
+      "achieved_gflops": 4627.569556098166
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1101,
+      "latency_us": 499.45,
+      "bandwidth_gbps": 8.397845630193215,
+      "arithmetic_intensity": 367.0,
+      "achieved_gflops": 4623.0140194213645
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1151,
+      "latency_us": 897.565,
+      "bandwidth_gbps": 4.672980786906797,
+      "arithmetic_intensity": 383.6666666666667,
+      "achieved_gflops": 2689.3004428648624
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1201,
+      "latency_us": 486.149,
+      "bandwidth_gbps": 8.627610053707816,
+      "arithmetic_intensity": 400.3333333333333,
+      "achieved_gflops": 5180.879837251543
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1251,
+      "latency_us": 517.814,
+      "bandwidth_gbps": 8.100020470670938,
+      "arithmetic_intensity": 417.0,
+      "achieved_gflops": 5066.562804404671
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1301,
+      "latency_us": 545.563,
+      "bandwidth_gbps": 7.688028696960754,
+      "arithmetic_intensity": 433.6666666666667,
+      "achieved_gflops": 5001.06266737297
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1351,
+      "latency_us": 537.15,
+      "bandwidth_gbps": 7.8084408452015275,
+      "arithmetic_intensity": 450.3333333333333,
+      "achieved_gflops": 5274.6017909336315
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1401,
+      "latency_us": 594.421,
+      "bandwidth_gbps": 7.056116792643597,
+      "arithmetic_intensity": 467.0,
+      "achieved_gflops": 4942.809813246839
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1451,
+      "latency_us": 571.251,
+      "bandwidth_gbps": 7.3423136239586455,
+      "arithmetic_intensity": 483.6666666666667,
+      "achieved_gflops": 5326.848534181998
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1501,
+      "latency_us": 581.99,
+      "bandwidth_gbps": 7.206831732503995,
+      "arithmetic_intensity": 500.3333333333333,
+      "achieved_gflops": 5408.727215244248
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1551,
+      "latency_us": 614.769,
+      "bandwidth_gbps": 6.822569127591015,
+      "arithmetic_intensity": 517.0,
+      "achieved_gflops": 5290.902358446832
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1601,
+      "latency_us": 645.554,
+      "bandwidth_gbps": 6.497216344411157,
+      "arithmetic_intensity": 533.6666666666666,
+      "achieved_gflops": 5201.021683701132
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1651,
+      "latency_us": 632.842,
+      "bandwidth_gbps": 6.627726983986524,
+      "arithmetic_intensity": 550.3333333333334,
+      "achieved_gflops": 5471.188625280876
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1701,
+      "latency_us": 633.514,
+      "bandwidth_gbps": 6.620696622331946,
+      "arithmetic_intensity": 567.0,
+      "achieved_gflops": 5630.90247729332
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1751,
+      "latency_us": 681.029,
+      "bandwidth_gbps": 6.158774442791716,
+      "arithmetic_intensity": 583.6666666666666,
+      "achieved_gflops": 5392.007024664148
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1801,
+      "latency_us": 712.415,
+      "bandwidth_gbps": 5.8874448179782854,
+      "arithmetic_intensity": 600.3333333333334,
+      "achieved_gflops": 5301.644058589446
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1851,
+      "latency_us": 682.393,
+      "bandwidth_gbps": 6.146463987760718,
+      "arithmetic_intensity": 617.0,
+      "achieved_gflops": 5688.552420672545
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1901,
+      "latency_us": 734.546,
+      "bandwidth_gbps": 5.710063086586817,
+      "arithmetic_intensity": 633.6666666666666,
+      "achieved_gflops": 5427.414963800769
+    },
+    {
+      "size": 1048576,
+      "num_aie_columns": 8,
+      "R": 1951,
+      "latency_us": 728.986,
+      "bandwidth_gbps": 5.75361392399854,
+      "arithmetic_intensity": 650.3333333333334,
+      "achieved_gflops": 5612.650382860577
+    }
+  ],
+  "summary": {
+    "num_points": 40,
+    "min_ai": 0.3333333333333333,
+    "max_ai": 650.3333333333334,
+    "min_gflops": 11.529147883452445,
+    "max_gflops": 5688.552420672545,
+    "measured_roofline_peak_gflops": 5688.552420672545
+  }
+}

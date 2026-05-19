@@ -88,6 +88,7 @@ def plan(
             commands = rule.compile(graph)
             break
     else:
+       
         raise RuntimeError(
             f"No matching rule to compile target(s): {', '.join(artifact.filename for artifact in graph)}"
         )

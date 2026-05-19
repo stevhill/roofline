@@ -9,7 +9,7 @@ from .base import (
     CompositeOperator,
     AIERuntimeArgSpec,
 )
-from .operator_bases import ChanneledUnaryOperator, BinaryElementwiseOperator
+from .operator_bases import ChanneledUnaryOperator, BinaryElementwiseOperator, SingleElementwiseOperator
 from .context import AIEContext
 from .compilation import (
     KernelObjectArtifact,
