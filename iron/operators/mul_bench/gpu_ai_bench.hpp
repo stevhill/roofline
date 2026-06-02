@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <future>
 #include <latch>
+#include <vector>
 
 struct GpuBenchConfig {
     int n            = 1 << 20;  // half2 elements
@@ -16,9 +17,11 @@ struct GpuBenchConfig {
 
 struct GpuBenchResult {
     double average_ms      = 0.0;
+    double flops           = 0.0;
     double tflops          = 0.0;
     double bandwidth_gbps  = 0.0;
     double arith_intensity = 0.0;  // FLOPs / Byte
+    std::vector<double> repeat_ms; // timed kernel duration per repeat (barrier-excluded)
     std::chrono::high_resolution_clock::time_point run_start{};
     std::chrono::high_resolution_clock::time_point run_end{};
 };

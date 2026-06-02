@@ -11,6 +11,7 @@
 #include <latch>
 #include <stdexcept>
 #include <vector>
+#include <barrier>
 
 #include "xrt/xrt_bo.h"
 #include "xrt/xrt_device.h"
@@ -73,7 +74,7 @@ NpuBenchResult run_npu_mul_bench(const NpuBenchConfig& config,
     // Standard MLIR AIE 1-in / 1-out calling convention:
     //   group 1 – instruction stream (cacheable)
     //   group 3 – input  (host-only)
-    //   group 4 – output (host-only)
+    //   group 4 – output (hos    bo_out.sync(XCL_BO_SYNC_BO_FROM_DEVICE);t-only)
     //   group 5,6,7 – dummy placeholders
     auto bo_instr    = xrt::bo(device, instr_v.size() * sizeof(uint32_t),
                                XCL_BO_FLAGS_CACHEABLE, kernel.group_id(1));
@@ -111,15 +112,21 @@ NpuBenchResult run_npu_mul_bench(const NpuBenchConfig& config,
 
     // ── Timed runs ───────────────────────────────────────────────────────────
     double total_us = 0.0;
+    std::vector<double> repeat_ms;
+    repeat_ms.reserve(config.repeats);
     const auto run_start = std::chrono::high_resolution_clock::now();
     for (int rep = 0; rep < config.repeats; ++rep) {
         rep_barrier.arrive_and_wait();
         auto t0 = std::chrono::high_resolution_clock::now();
-        for (int it = 0; it < config.iters; ++it)
+        for (int it = 0; it < config.iters; ++it) {
             kernel(opcode, bo_instr, static_cast<int>(instr_v.size()),
                    bo_in, bo_out, bo_tmp, bo_ctrlpkts, bo_trace).wait();
+        }
         auto t1 = std::chrono::high_resolution_clock::now();
-        total_us += std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count();
+        const double elapsed_us =
+            static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count());
+        total_us += elapsed_us;
+        repeat_ms.push_back(elapsed_us / 1000.0);
     }
     const auto run_end = std::chrono::high_resolution_clock::now();
 
@@ -136,5 +143,5 @@ NpuBenchResult run_npu_mul_bench(const NpuBenchConfig& config,
     const double tflops          = flops / seconds / 1e12;
     const double arith_intensity = flops / bytes_moved;
 
-    return {average_ms, tflops, bandwidth_gbps, arith_intensity, run_start, run_end};
+    return {average_ms, flops, tflops, bandwidth_gbps, arith_intensity, std::move(repeat_ms), run_start, run_end};
 }

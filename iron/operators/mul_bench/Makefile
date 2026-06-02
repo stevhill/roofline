@@ -12,7 +12,8 @@ CXXFLAGS  += -I/usr/include
 LDFLAGS   := -lxrt++ -lxrt_coreutil
 
 # ── NPU artifact parameters (must match MulBenchParams defaults in test.cpp) ──
-NPU_SIZE      ?= 16777216   # 1 << 24
+# Keep comments on separate lines so variable values cannot pick up trailing spaces.
+NPU_SIZE      ?= 16777216
 NPU_R         ?= 2
 NPU_COLUMNS   ?= 8
 NPU_CHANNELS  ?= 2

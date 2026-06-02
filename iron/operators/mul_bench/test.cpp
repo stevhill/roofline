@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 using Clock  = std::chrono::high_resolution_clock;
 
 struct MulBenchParams {
-    int size_gpu      = 1 << 24;  // number of 16-bit elements for GPU (uses size/2 half2 pairs)
+    int size_gpu      = 1 << 20;  // number of 16-bit elements for GPU (uses size/2 half2 pairs)
     int size_npu      = 1 << 20;  // number of 16-bit elements for NPU (matches existing artifacts)
     int r             = 2;
     int iters_gpu     = 1;        // kernel invocations per timed sample (scales GPU work/time)
@@ -59,7 +59,7 @@ static void print_usage(const char* prog)
         "  --r R          repeat count — controls arithmetic intensity (default: 2)\n"
         "  --iters-gpu N  kernel invocations per timed GPU sample (scales GPU work/time, default: 1)\n"
         "  --iters-npu N  kernel invocations per timed NPU sample (scales NPU work/time, default: 1)\n"
-        "  --size-gpu N   GPU element count in 16-bit elements (default: 16777216)\n"
+        "  --size-gpu N   GPU element count in 16-bit elements (default: 1048576)\n"
         "  --size-npu N   NPU element count in 16-bit elements (default: 1048576)\n"
         "  --repeats N    number of timed repetitions to average (default: 3)\n"
         "  --no-gpu       skip GPU benchmark\n"
@@ -258,27 +258,31 @@ int main(int argc, char** argv)
                     wall_ms, repeats);
 
         // ── Combined throughput (only when both devices ran) ──────────────────
-        // Effective window = from when the first device starts its timed loop
-        // to when the last device ends it.  This matches the timestamps used
-        // for individual TFLOPS, so there is no double-counting of overhead
-        // (memcpy, XRT sync) that happens after the timed sections.
-        //
-        //   combined_tflops = (GPU_tflops * GPU_run_ms + NPU_tflops * NPU_run_ms)
-        //                     / effective_ms
-        //
-        // Units: (TFLOPS * ms) / ms = TFLOPS  ✓
+        // Compute combined throughput per repeat (barrier-excluded), then
+        // average those repeat-level TFLOPS values.
         double combined_tflops = 0.0;
         if (!params.no_gpu && !params.no_npu) {
-            const double gpu_run_ms = to_ms(gpu_result.run_end - gpu_result.run_start);
-            const double npu_run_ms = to_ms(npu_result.run_end - npu_result.run_start);
-            const auto   eff_start  = std::min(gpu_result.run_start, npu_result.run_start);
-            const auto   eff_end    = std::max(gpu_result.run_end,   npu_result.run_end);
-            const double eff_ms     = to_ms(eff_end - eff_start);
-            combined_tflops = (gpu_result.tflops * gpu_run_ms +
-                               npu_result.tflops * npu_run_ms) / eff_ms;
+            if (gpu_result.repeat_ms.size() != npu_result.repeat_ms.size()) {
+                throw std::runtime_error("Mismatch in per-repeat timing data size between GPU and NPU");
+            }
+            const std::size_t rep_count = gpu_result.repeat_ms.size();
+            if (rep_count == 0) {
+                throw std::runtime_error("No per-repeat timing data available for combined throughput");
+            }
+            double combined_tflops_sum = 0.0;
+            for (std::size_t i = 0; i < rep_count; ++i) {
+                const double rep_window_ms = std::max(gpu_result.repeat_ms[i], npu_result.repeat_ms[i]);
+                if (rep_window_ms <= 0.0) {
+                    continue;
+                }
+                const double rep_tflops = ((gpu_result.flops + npu_result.flops) / 1e12) / (rep_window_ms / 1000.0);
+                combined_tflops_sum += rep_tflops;
+            }
+            combined_tflops = combined_tflops_sum / static_cast<double>(rep_count);
             std::fprintf(out, "\n[Combined throughput]\n");
             std::fprintf(out, "  GPU:                 %.4f TFLOPS\n", gpu_result.tflops);
             std::fprintf(out, "  NPU:                 %.4f TFLOPS\n", npu_result.tflops);
+            std::fprintf(out, "  Repeats averaged:    %zu\n", rep_count);
             std::fprintf(out, "  Combined:            %.4f TFLOPS\n", combined_tflops);
         }
 

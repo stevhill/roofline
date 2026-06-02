@@ -114,6 +114,8 @@ GpuBenchResult run_gpu_ai_bench(const GpuBenchConfig& config,
 
     // ── Timed runs ───────────────────────────────────────────────────────────
     float total_ms = 0.0f;
+    std::vector<double> repeat_ms;
+    repeat_ms.reserve(repeats);
     const auto run_start = std::chrono::high_resolution_clock::now();
     for (int rep = 0; rep < repeats; ++rep) {
         rep_barrier.arrive_and_wait();
@@ -126,6 +128,7 @@ GpuBenchResult run_gpu_ai_bench(const GpuBenchConfig& config,
         float elapsed_ms = 0.0f;
         CHECK(hipEventElapsedTime(&elapsed_ms, ev_start, ev_stop));
         total_ms += elapsed_ms;
+        repeat_ms.push_back(static_cast<double>(elapsed_ms));
     }
     const auto run_end = std::chrono::high_resolution_clock::now();
 
@@ -142,9 +145,11 @@ GpuBenchResult run_gpu_ai_bench(const GpuBenchConfig& config,
 
     GpuBenchResult result;
     result.average_ms      = average_ms;
+    result.flops           = flops;
     result.tflops          = flops / seconds / 1e12;
     result.bandwidth_gbps  = bytes_moved / seconds / 1e9;
     result.arith_intensity = flops / bytes_moved;
+    result.repeat_ms       = std::move(repeat_ms);
     result.run_start       = run_start;
     result.run_end         = run_end;
 
