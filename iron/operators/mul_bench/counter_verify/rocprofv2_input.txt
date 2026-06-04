@@ -1,3 +1,0 @@
-# Backward-compatible default profile.
-# rocprofv2 counter input uses `pmc:` rows.
-pmc: SQ_INSTS_VALU GRBM_GUI_ACTIVE SQ_WAVES

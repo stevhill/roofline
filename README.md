@@ -160,6 +160,50 @@ To run a specific operator's tests:
 pytest iron/operators/axpy/
 ```
 
+### Running mul_bench
+
+The `mul_bench` benchmark can run GPU-only, NPU-only, or combined GPU+NPU execution.
+
+1. Make sure your environment is active:
+
+   ```bash
+   source /opt/xilinx/xrt/setup.sh
+   source /path/to/ironenv/bin/activate
+   ```
+
+2. Build and run from the operator directory:
+
+   ```bash
+   cd iron/operators/mul_bench
+   make run
+   ```
+
+   This will:
+   - build `mul_bench_parallel_test`
+   - generate required NPU artifacts in `build/` if missing
+   - run the benchmark
+
+3. Optional: override NPU artifact parameters at build/run time:
+
+   ```bash
+   cd iron/operators/mul_bench
+   make run NPU_SIZE=1048576 NPU_R=2 NPU_COLUMNS=8 NPU_CHANNELS=2 NPU_TILE_SIZE=8192
+   ```
+
+4. Optional: run the binary directly with runtime flags:
+
+   ```bash
+   cd iron/operators/mul_bench
+   ./mul_bench_parallel_test --help
+   ./mul_bench_parallel_test --r 200 --iters-gpu 1 --iters-npu 1 --repeats 3 --json
+   ```
+
+5. Optional: run only the NPU Python path:
+
+   ```bash
+   python iron/operators/mul_bench/run_mul_bench_npu.py --size 1048576 --r 2 --num-columns 8 --num-channels 2 --tile-size 8192
+   ```
+
 ### Git Hooks (Optional but Recommended)
 
 To ensure your code passes CI linting checks before pushing, install the pre-push hook:
